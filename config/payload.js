@@ -1,0 +1,16 @@
+module.exports = {
+  city: "Chennai",
+  mid: "35098",
+  experience: "ALL",
+  specialTag: "ALL",
+  lat: "12.895806797881898",
+  lng: "80.2079467072295",
+  lang: "ALL",
+  format: "ALL",
+  dated: "",
+  time: "08:00-24:00",
+  cinetype: "ALL",
+  hc: "ALL",
+  adFree: false,
+  bbt: false,
+};
