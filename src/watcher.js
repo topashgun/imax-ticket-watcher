@@ -5,35 +5,40 @@ const { findAvailableShow } = require("./parser");
 const logger = require("./logger");
 const { notify } = require("./notifier");
 
-async function checkAvailability() {
-  let found = false;
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-  for (const date of config.dates) {
-    try {
-      logger.logChecking(date);
+async function startWatcher() {
+  while (true) {
+    for (const date of config.dates) {
+      try {
+        logger.logChecking(date);
 
-      const response = await fetchSessions(date);
+        const response = await fetchSessions(date);
 
-      const result = findAvailableShow(response);
+        const result = findAvailableShow(response);
 
-      if (result.available) {
-        logger.logAvailability(result);
+        if (result.available) {
+          logger.logAvailability(result);
 
-        await notify(result);
+          await notify(result);
 
-        found = true;
-        break;
+          process.exit(0);
+        }
+
+        logger.logNoAvailability(result);
+      } catch (err) {
+        console.error(err.message);
       }
-
-      logger.logNoAvailability(result);
-    } catch (err) {
-      console.error(err);
     }
-  }
 
-  return found;
+    logger.logSleeping(config.pollIntervalMinutes);
+
+    await sleep(config.pollIntervalMinutes * 60 * 1000);
+  }
 }
 
 module.exports = {
-  checkAvailability,
+  startWatcher,
 };
