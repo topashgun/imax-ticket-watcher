@@ -13,7 +13,7 @@ function findAvailableShow(data) {
         continue;
       }
 
-      const availableShows = exp.shows.filter((show) => show.statusTxt === "Available");
+      const availableShows = exp.shows.filter((show) => show.statusTxt === "Available" || show.statusTxt === "Filling Up Fast");
 
       if (availableShows.length > 0) {
         return {
